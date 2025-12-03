@@ -16,6 +16,16 @@ class Heroes(db.Model):
     abilities = db.relationship("Abilities", backref="hero", cascade="all, delete-orphan")
     quests = db.relationship("HeroQuest", backref="hero", cascade="all, delete-orphan")
 
+    def __init__(self, hero_name, age, health_points, is_alive, race_id):
+        self.hero_name = hero_name
+        self.age = age
+        self.health_points = health_points
+        self.is_alive = is_alive
+        self.race_id = race_id 
+    
+    def new_hero_obj():
+        return Heroes('', 0, 0, True, '')
+
 
 class HeroesSchema(ma.Schema):
     hero_id = ma.fields.UUID(dump_only=True)

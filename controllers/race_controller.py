@@ -6,18 +6,14 @@ from util.reflection import populate_object
 # CREATE
 def create_race():
     data = request.get_json()
-    if not data or "race_name" not in data:
-        return jsonify({"error": "missing required field: race_name"}), 400
 
-    race = Races(
-        race_name=data["race_name"],
-        homeland=data.get("homeland"),
-        lifespan=data.get("lifespan")
-    )
-    db.session.add(race)
+    new_race = Races.new_race_obj()
+    populate_object(new_race, data)
+
+    db.session.add(new_race)
     db.session.commit()
 
-    return jsonify({"message": "race created successfully", "results": race_schema.dump(race)}), 201
+    return jsonify({"message": "race created successfully", "results": race_schema.dump(new_race)}), 201
 
 
 # READ ALL

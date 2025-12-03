@@ -15,6 +15,16 @@ class Quests(db.Model):
 
     heroes = db.relationship("HeroQuest", backref="quest", cascade="all, delete-orphan")
 
+    def __init__(self, quest_name, difficulty, reward_gold, is_completed, location_id):
+        self.quest_name = quest_name
+        self.difficulty = difficulty
+        self.reward_gold = reward_gold
+        self.is_completed = is_completed
+        self.location_id = location_id
+
+    def new_quest_obj():
+        return Quests('', '', 0, False, '')
+
 
 class QuestsSchema(ma.Schema):
     quest_id = ma.fields.UUID(dump_only=True)

@@ -11,6 +11,14 @@ class Abilities(db.Model):
     power = db.Column(db.Integer(), default=10)
     hero_id = db.Column(UUID(as_uuid=True), db.ForeignKey("Heroes.hero_id"), nullable=False)
 
+    def __init__(self, ability_name, power, hero_id):
+        self.ability_name = ability_name
+        self.power = power
+        self.hero_id = hero_id
+
+    def new_abilities_obj():
+        return Abilities('', 0, '')
+
 
 class AbilitiesSchema(ma.Schema):
     ability_id = ma.fields.UUID(dump_only=True)

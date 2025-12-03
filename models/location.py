@@ -13,6 +13,14 @@ class Locations(db.Model):
 
     quests = db.relationship("Quests", backref="location", cascade="all, delete-orphan")
 
+    def __init__(self, location_name, danger_level, realm_id):
+        self.location_name = location_name
+        self.danger_level = danger_level
+        self.realm_id = realm_id
+
+    def new_location_obj():
+        return Locations('', 0, '')
+
 
 class LocationsSchema(ma.Schema):
     location_id = ma.fields.UUID(dump_only=True)

@@ -12,6 +12,13 @@ class Realms(db.Model):
 
     locations = db.relationship("Locations", backref="realm", cascade="all, delete-orphan")
 
+    def __init__(self, realm_name, ruler):
+        self.realm_name = realm_name
+        self.ruler = ruler
+
+    def new_realm_obj():
+        return Realms('', '')
+
 
 class RealmsSchema(ma.Schema):
     realm_id = ma.fields.UUID(dump_only=True)

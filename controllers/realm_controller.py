@@ -6,17 +6,14 @@ from util.reflection import populate_object
 # CREATE
 def create_realm():
     data = request.get_json()
-    if not data or "realm_name" not in data:
-        return jsonify({"error": "missing required field: realm_name"}), 400
 
-    realm = Realms(
-        realm_name=data["realm_name"],
-        ruler=data.get("ruler")
-    )
-    db.session.add(realm)
+    new_realm = Realms.new_realm_obj()
+    populate_object(new_realm)
+
+    db.session.add(new_realm)
     db.session.commit()
 
-    return jsonify({"message": "realm created successfully", "results": realm_schema.dump(realm)}), 201
+    return jsonify({"message": "realm created successfully", "results": realm_schema.dump(new_realm)}), 201
 
 
 # READ ALL

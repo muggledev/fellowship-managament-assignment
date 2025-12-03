@@ -7,26 +7,14 @@ from util.reflection import populate_object
 # CREATE
 def create_hero():
     data = request.get_json()
-    if not data or "hero_name" not in data or "race_id" not in data:
-        return jsonify({"error": "missing required fields: hero_name and race_id"}), 400
 
-    race = Races.query.filter_by(race_id=data["race_id"]).first()
-    if not race:
-        return jsonify({"error": "race not found"}), 404
+    new_hero = Heroes.new_hero_obj()
+    populate_object(new_hero, data)
 
-    hero = Heroes(
-        hero_name=data["hero_name"],
-        age=data.get("age"),
-        health_points=data.get("health_points", 100),
-        is_alive=data.get("is_alive", True),
-        race_id=data["race_id"]
-    )
-    db.session.add(hero)
+    db.session.add(new_hero)
     db.session.commit()
 
-    result = hero_schema.dump(hero)
-    result["race"] = {"race_id": race.race_id, "race_name": race.race_name}
-    return jsonify({"message": "hero created successfully", "results": result}), 201
+    return jsonify({"message": "hero created successfully", "results": hero_schema.dump(new_hero)}), 201
 
 
 # READ ALL

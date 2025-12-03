@@ -7,24 +7,14 @@ from util.reflection import populate_object
 # CREATE
 def create_location():
     data = request.get_json()
-    if not data or "location_name" not in data or "realm_id" not in data:
-        return jsonify({"error": "missing required fields: location_name and realm_id"}), 400
 
-    realm = Realms.query.filter_by(realm_id=data["realm_id"]).first()
-    if not realm:
-        return jsonify({"error": "realm not found"}), 404
+    new_location = Locations.new_location_obj()
+    populate_object(new_location, data)
 
-    location = Locations(
-        location_name=data["location_name"],
-        danger_level=data.get("danger_level"),
-        realm_id=data["realm_id"]
-    )
-    db.session.add(location)
+    db.session.add(new_location)
     db.session.commit()
 
-    result = location_schema.dump(location)
-    result["realm"] = {"realm_id": realm.realm_id, "realm_name": realm.realm_name}
-    return jsonify({"message": "location created successfully", "results": result}), 201
+    return jsonify({"message": "location created successfully", "results": location_schema.dump(new_location)}), 201
 
 
 # READ ALL

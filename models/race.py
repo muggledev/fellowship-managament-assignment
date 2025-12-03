@@ -13,6 +13,14 @@ class Races(db.Model):
 
     heroes = db.relationship("Heroes", backref="race", cascade="all, delete-orphan")
 
+    def __init__(self, race_name, homeland, lifespan):
+        self.race_name = race_name
+        self.homeland = homeland
+        self.lifespan = lifespan
+
+    def new_race_obj():
+        return Races('', '', 0)
+
 
 class RacesSchema(ma.Schema):
     race_id = ma.fields.UUID(dump_only=True)
